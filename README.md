@@ -18,4 +18,15 @@ First, run the development server:
 
 ![alt text](docs/codespaces_install.png "Title")
 
-### 4. 
+### 4. Start the development server
+![alt text](docs/codespaces_run.png "Title")
+
+### 5. Open The URL provided with your browser to see the result. 
+![alt text](docs/codespaces_ports.png "Title")
+
+### 6. Copy the `.env.example` file to `.env.local` and fill in the Api key and URL
+
+### 7. Edit the `src/userAttributes.json` file and fill in your farm details
+
+### 8. Re-open the application, it should automaatically reload and you can issue your credential
+
