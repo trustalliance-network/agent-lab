@@ -2,26 +2,78 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+}
+
+a {
+  color: #0070f3;
+  text-decoration: none;
+}
+
+h1, h2, h3, h4 {
+  @apply font-normal;
+}
+h1 {
+  @apply text-3xl;
+}
+h2 {
+  @apply text-xl;
+}
+h3 {
+  @apply text-lg;
+}
+
+
+.btn {
+  position: relative;
+  display: -webkit-inline-flex;
+  display: -moz-inline-box;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -moz-box-align: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  -moz-box-pack: center;
+  justify-content: center;
+  word-break: break-all;
+  overflow: hidden;
+  padding: 0.5rem 1rem;
+  min-width: 70px;
+  text-align: center;
+  background-image: none;
+  white-space: normal;
+  cursor: pointer;
+  -webkit-transition: all .4s ease;
+  transition: all .4s ease;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  @apply rounded;
+}
+.btn.btn-primary {
+  background-color: #00aeef;
+  @apply font-medium;
+  border-color: transparent;
+  @apply text-blue-900;
+}
+.btn.btn-secondary {
+  @apply bg-white;
+  @apply border border-[#00aeef];
+  @apply font-medium;
+  @apply text-blue-900;
+}
+
+pre {
+  @apply whitespace-pre-wrap max-w-2xl;
+}
+.debug {
+  @apply bg-[#0D0208] text-xs text-[#00FF41] px-4 py-2 font-mono whitespace-pre-wrap break-all;
+}
+
+
+.bg-primary-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(107, 46, 30);
+  @apply hover:text-opacity-80;
 }
