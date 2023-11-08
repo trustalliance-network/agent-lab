@@ -5,6 +5,7 @@ import QRCode from "qrcode.react";
 import classNames from "classnames";
 import get from "lodash/get";
 import Link from "next/link";
+const userAttributes = require('../userAttributes.json')
 
 function createVerification(contactId, invitationId) {
   return fetch(`/api/verifications`, {
@@ -31,20 +32,8 @@ function createSession(invitation, sessionId) {
 function createInvitation() {
   return fetch(`/api/invitations`, {method: "POST"}).then(r => r.ok ? r.json() : null)
 }
-function getVerification(id) {
-  return fetch(`/api/verifications/${id}`)
-    .then(r => r.ok ? r.json() : null);
-}
 function getInvitation(id) {
   return fetch(`/api/invitations/${id}`).then(r => r.ok ? r.json() : null);
-}
-function hasSessionExpired(session) {
-  const sessionDate = new Date(session.created_at);
-  const now = new Date();
-  const diff = now - sessionDate;
-  const minutes = Math.floor(diff / 1000 / 60);
-
-  return (minutes > 30);
 }
 async function findSession(sessionId) {
   console.log('findSession', sessionId)
@@ -52,18 +41,6 @@ async function findSession(sessionId) {
   const lsSession = localStorage.getItem("session");
   console.log('lsSession', lsSession)
   return JSON.parse(lsSession);
-}
-async function findCredential(sessionId) {
-  return fetch(`/api/credentials?session_id=${sessionId}`).then(r => r.json());
-}
-function createCredential(sessionId, attributes) {
-  return fetch(`/api/credentials`, {
-    method: "POST",
-    body: JSON.stringify({
-      session_id: sessionId,
-      attributes,
-    })
-  }).then(r => r.json());
 }
 
 export default function DashboardPage() {
@@ -228,23 +205,16 @@ function ClaimItem({ name, value }) {
   }
 }
 
-
 function ReturningUserComponent({ session, existingVerification = null, onCredential }) {
 
   const [state, setState] = useState({status: 'pending',});
   // const [user, setUser] = useState(null);
 
+
   const user = {
     id: session.contact_id,
     // invitation_id: session.invitation_id,
-    attributes: {
-      farm_name: 'abc123',
-      physical_address_line_1: 'abc123',
-      physical_address_line_2: 'abc123',
-      physical_address_postal_code: 'abc123',
-      physical_address_city: 'abc123',
-      physical_address_subnational: 'abc123',
-    }
+    attributes: userAttributes
   }
 
   const planHeader = (<Link className="block leading-tight hover:text-gray-100" href="/">
