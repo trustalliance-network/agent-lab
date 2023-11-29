@@ -1,3 +1,9 @@
 {
-
+  "farm_name": "",
+  "physical_address_line_1":  "",
+  "physical_address_line_2": "",
+  "physical_address_city":  "",
+  "physical_address_postal_code": "",
+  "physical_address_subnational":  "",
+  "physical_address_country": ""
 }

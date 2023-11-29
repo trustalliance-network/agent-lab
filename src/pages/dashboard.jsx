@@ -96,10 +96,15 @@ export default function DashboardPage() {
   }, [sessionId]);
 
   const isAuthenticated = !isEmpty(user);
-  const isReturningUser = !isEmpty(session) && session.state === 'connected' && !isAuthenticated && isEmpty(credential);
+  const isReturningUser = !isEmpty(session)
+    && session.state === 'connected'
+    && !isAuthenticated
+    && isEmpty(credential);
   const hasCredential = !isEmpty(credential);
   const requiresInvitation = !isEmpty(session) && sessionId && state === 'none';
   const isInvalid = isEmpty(session) && !sessionId && state === 'session_expired';
+
+  // returningUser
 
   function handleConnection(invitation) {
     createSession(invitation, sessionId).then(setSession);
@@ -119,12 +124,17 @@ export default function DashboardPage() {
         <h1>Get your GHG Credential</h1>
         <h4 className="text-xl font-light mb-8">Use your Credential Wallet application to connect and Receive Verifiable Credentials</h4>
 
-        <div>sessionID: {sessionId}</div>
-        <div>state: {state}</div>
-        <div>requiresInvitation: {requiresInvitation ? 'y' : 'n'}</div>
-        <div>hasCredential: {hasCredential ? 'y' : 'n'}</div>
-        <div>isAuthenticated: {isAuthenticated ? 'y' : 'n'}</div>
-        <div>isReturningUser: {isReturningUser ? 'y' : 'n'}</div>
+        <pre>
+          <div><b>sessionID</b>: {sessionId}</div>
+          <div>
+            <b>state</b>:
+            <span className="ml-2 text-xs text-white px-2 py-1 font-semibold rounded bg-[#333]">{state}</span>
+          </div>
+          <div><b>requiresInvitation</b>: {requiresInvitation ? '✅' : '⛔'}</div>
+          <div><b>hasCredential</b>: {hasCredential ? '✅' : '⛔'}</div>
+          <div><b>isAuthenticated</b>: {isAuthenticated ? '✅' : '⛔'}</div>
+          <div><b>isReturningUser</b>: {isReturningUser ? '✅' : '⛔'}</div>
+        </pre>
 
         {state !== 'loading' && (
           <>
@@ -235,6 +245,7 @@ function ReturningUserComponent({ session, existingVerification = null, onCreden
       contact_id: user.id,
       attributes: user.attributes,
     }
+
     setState({
       status: 'issuing_credential',
       ...body
@@ -251,69 +262,43 @@ function ReturningUserComponent({ session, existingVerification = null, onCreden
         setState({
           status: 'issuance_successful',
         });
+        onCredential(r.json());
 
-        return r.json()
+        // return r.json()
       }
 
-      throw new Error(r.statusText);
+      // throw new Error(r.statusText);
     }).catch(err => {
       setState({
         status: 'issuance_failed',
         error: err.message,
-
       });
       console.error({err});
     })
   }
 
   return (
-    <div className="py-12 ">
-      <div className="mb-12">
-        <h3>Reporting</h3>
-      </div>
+    <div className="py-6">
 
       <div className="panel mb-4">
-        <div className="panel-header flex items-centerpy-4">
-          <div className="text-sm font-semibold ">GHG Report</div>
-        </div>
-        <div className="panel-body p-8">
+        <h3 >GHG Report</h3>
+        <div className="panel-body py-8">
           <button
             onClick={handleGHGClick}
             className={classNames({
-              "btn btn-primary": true,
+              "btn btn-primary !text-white font-sans !font-semibold": true,
               "opacity-50 !cursor-not-allowed": ["issuing_credential"].includes(state.status),
             })}
             disabled={["issuing_credential"].includes(state.status)}
           >
             {state.status === 'issuing_credential' && ('Issuing credential...')}
-            {state.status === 'issuance_successful' && ('Credential issued successfully')}
+            {state.status === 'issuance_successful' && ('Credential issued successfully ✅')}
             {state.status === 'issuance_failed' && ('Credential failed')}
             {state.status === 'pending' && ('Issue GHG Credential')}
           </button>
         </div>
       </div>
 
-      <div className="panel mb-4">
-        <div className="panel-header flex items-center px-8 py-4">
-          <div className="text-sm font-semibold ">
-            C02-E GREENHOUSE GAS EMISSIONS (Kg/ha) Jul 22 - Jun 23
-          </div>
-        </div>
-        <div className="panel-body p-8">
-          <img src="/panel-graph-one.png" alt=""/>
-        </div>
-      </div>
-
-      <div className="panel">
-        <div className="panel-header flex items-center px-8 py-4">
-          <div className="text-sm font-semibold ">
-            C02-E GREENHOUSE GAS EMISSIONS (Kg/ha) Jul 22 - Jun 23
-          </div>
-        </div>
-        <div className="panel-body p-8">
-          <img src="/panel-graph-two.png" alt=""/>
-        </div>
-      </div>
     </div>
   )
 }

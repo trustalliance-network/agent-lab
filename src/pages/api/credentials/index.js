@@ -51,7 +51,7 @@ function generateRandomCredential(data) {
     report_id: 'GHG',
     organisation_id: data.attributes.farm_name,
     organisation_address: getFullAddress(data.attributes),
-    full_report_pdf_url: `https://assets.myenviro-nz.org/apps/${process.env.APP_ID}/ghg-report.pdf`,
+    full_report_pdf_url: `https://assets.tanz.network/apps/app_my.bovine-nz-org.pdf`,
     period_start_date: '2022-07',
     period_end_date: '2023-06',
     report_issuer: process.env.APP_ID,
