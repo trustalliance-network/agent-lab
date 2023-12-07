@@ -5,7 +5,7 @@
 
   "image": "mcr.microsoft.com/devcontainers/javascript-node:18",
 
-   "forwardPorts": [3000],
+  "forwardPorts": [3000],
 
   "portsAttributes": {
     "3000": {
@@ -15,4 +15,5 @@
   },
 
   "postCreateCommand": "npm install",
+  "postStartCommand": "npm run dev"
 }
