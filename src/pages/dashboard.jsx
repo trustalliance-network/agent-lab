@@ -19,14 +19,15 @@ function createVerification(contactId, invitationId) {
 function createSession(invitation, sessionId) {
   return new Promise(function (resolve, reject) {
     const oldSession = JSON.parse(localStorage.getItem("session"));
-    localStorage.setItem("session", JSON.stringify({
+    const newSession = {
       ...oldSession,
       id: sessionId,
       invitation_id: invitation.invitation_id,
       contact_id: invitation.contact_id,
       state: 'connected',
-    }));
-    resolve();
+    };
+    localStorage.setItem("session", JSON.stringify(newSession));
+    resolve(newSession);
   });
 }
 function createInvitation() {
@@ -82,7 +83,6 @@ export default function DashboardPage() {
       setState('session_expired');
       return;
     }
-    //, findCredential(sessionId)
     Promise.all([findSession(sessionId)])
       .then(r => {
         console.log(r[0]);
@@ -95,16 +95,12 @@ export default function DashboardPage() {
       });
   }, [sessionId]);
 
-  const isAuthenticated = !isEmpty(user);
   const isReturningUser = !isEmpty(session)
     && session.state === 'connected'
-    && !isAuthenticated
     && isEmpty(credential);
   const hasCredential = !isEmpty(credential);
   const requiresInvitation = !isEmpty(session) && sessionId && state === 'none';
   const isInvalid = isEmpty(session) && !sessionId && state === 'session_expired';
-
-  // returningUser
 
   function handleConnection(invitation) {
     createSession(invitation, sessionId).then(setSession);
@@ -117,6 +113,8 @@ export default function DashboardPage() {
   function handleCredentialDelete() {
     setCredential(null);
   }
+
+  console.log(session);
 
   return (
     <DashboardLayout>
@@ -132,7 +130,6 @@ export default function DashboardPage() {
           </div>
           <div><b>requiresInvitation</b>: {requiresInvitation ? '✅' : '⛔'}</div>
           <div><b>hasCredential</b>: {hasCredential ? '✅' : '⛔'}</div>
-          <div><b>isAuthenticated</b>: {isAuthenticated ? '✅' : '⛔'}</div>
           <div><b>isReturningUser</b>: {isReturningUser ? '✅' : '⛔'}</div>
         </pre>
 
