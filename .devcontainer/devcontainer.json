@@ -1,0 +1,18 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/javascript-node
+{
+  "name": "MyBonein Node.js",
+
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:18",
+
+   "forwardPorts": [3000],
+
+  "portsAttributes": {
+    "3000": {
+      "label": "Server Started",
+      "onAutoForward": "notify"
+    }
+  },
+
+  "postCreateCommand": "npm install",
+}
